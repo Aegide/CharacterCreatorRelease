@@ -1,4 +1,4 @@
-//package characterCreator;
+
 
 
 import java.awt.Color;
@@ -23,16 +23,25 @@ import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JSlider;
 import javax.swing.JComboBox;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-
+//implements ComponentListener
 public class FireEmblemCharacterCreator extends JFrame implements ChangeListener, ItemListener, ActionListener {
 	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	BufferedImage portrait;
 	BufferedImage token;
@@ -44,8 +53,18 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	BufferedImage blankToken;
 	BufferedImage importedToken;
 	
-	ImagePanel portraitPanel;
-	ImagePanel tokenPanel;
+	JLabel portraitPanel;
+	JLabel tokenPanel;
+	
+	//TODO
+	int width;
+	int height;
+	
+	final String textRandomColours = "Random colours";
+	final String textRandomPortrait = "Random portrait";
+	final String textExport = "Export";
+
+	Random rn = new Random();
 	
 	ArrayList<JSlider> sliders = new ArrayList<JSlider>();
 	ArrayList<JComboBox<String>> boxes = new ArrayList<JComboBox<String>>();
@@ -58,6 +77,10 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	Color leatherColor= new Color(148,100,66,255);
 	Color outlineColor = new Color(0,0,0,255);
 	Color blankColor = new Color(0,0,0,0);
+	
+	Color redTextColor = new Color(150,0,0,255);
+	Color greenTextColor = new Color(0,150,0,255);
+	Color blueTextColor = new Color(0,0,150,255);
 	
 	int hairXOffsetVal=0;
 	int hairYOffsetVal=0;
@@ -81,12 +104,29 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+
+				/*
+				String rawPath = System.getProperty("user.dir");
+				//System.out.println("Working Directory = " + rawPath);
+
+				Path path_src = Paths.get(rawPath);
+				System.out.println("SRC = " + path_src);
+
+				Path path_resx = Paths.get(rawPath, "resources");
+				System.out.println("RESX = " + path_resx);
+				*/
+				
+
+				
 				try {
 					FireEmblemCharacterCreator frame = new FireEmblemCharacterCreator();
 					frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
+				
 			}
 		});
 	}
@@ -97,83 +137,135 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	 */
 	public FireEmblemCharacterCreator() throws UnsupportedEncodingException {
 		
+		String rawPath = System.getProperty("user.dir");
+		Path path = Paths.get(rawPath);
+		Path path_resx = Paths.get(rawPath, "resources");
 
-		
-		String rawPath = FireEmblemCharacterCreator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		String path = URLDecoder.decode(rawPath, "UTF-8");
-		path = path.substring(0, path.lastIndexOf("/") + 1);
-		path = path.replaceAll("%20", " ");
-		
-		folder = new File(path + "resources");
-		listOfFiles  = folder.listFiles();
+		folder = new File(path_resx.toUri());
+		listOfFiles = folder.listFiles();
 		
 		hair = null;
 		try {
 		    hair = ImageIO.read(new File(path + "resources/Empty.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		
 		hairb = null;
 		try {
 		    hairb = ImageIO.read(new File(path + "resources/Empty.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		
 		face = null;
 		try {
 		    face = ImageIO.read(new File(path + "resources/Empty.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		
 		armor = null;
 		try {
 		    armor = ImageIO.read(new File(path + "resources/Empty.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
+
 		portrait = null;
 		try {
 		    portrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
-		//System.out.println((portrait == null));
+		//System.out.println("portrait is null: " + (portrait == null));//EDIT
 		
 		token = null;
 		try {
 		    token = ImageIO.read(new File(path + "resources/BlankTok.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		
 		blankPortrait = null;
 		try {
 		    blankPortrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
-		//System.out.println((portrait == null));
+		//System.out.println("blankPortrait is null: " + (blankPortrait == null));//EDIT
 		
 		blankToken = null;
 		try {
 		    blankToken = ImageIO.read(new File(path + "resources/BlankTok.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		
 		importedToken = null;
 		try {
 		    importedToken = ImageIO.read(new File(path + "resources/BlankTok.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		
+		
+		
+		
+		//TODO
+		int initialWidth = 1000;//932
+		int initialHeight = 700;//610	
+		int border = 5;//5 (useless ?)
+		
+		int xRedSlider = 200;//165
+		int xGreenSlider = 480;//430
+		int xBlueSlider = 760;//688
+		
+		int xRedText = 10;//10
+		int xGreenText = 430;//390
+		int xBlueText = 710;//655
+		
+		//System.out.println(xRedSlider - xRedText);
+		//System.out.println(xGreenSlider - xGreenText);
+		//System.out.println(xBlueSlider - xBlueText);
+		
+		int widthTextRed = 190;//124 or 131 or 145
+		int widthTextGreen = 50;//46
+		int widthTextBlue = 50;//46
+		
+		int widthTextOffset = 61;//46
+		
+		int widthSlider = 215;//215
+		int xSpace = 15;//10 (between Slider's end and Text's start)
+		
+		String RandomColourText = "Random colours";
+				
+		
+		
+		
+		//TODO
+		
+		
 		setFont(new Font("Calibri", Font.BOLD, 12));
-		setTitle("Fire Emblem Character Creator");
+		setTitle("Fire Emblem Character Creator - Custom build");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 932, 610);
+		
+		
+		setBounds(100, 100, initialWidth, initialHeight);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(new EmptyBorder(border, border, border, border));//setBorder() useless ?
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		//RED(y) : 11 , 60 , 109, 158 , 256 => 49
+		
+		
+		
+		
 		JLabel lblHairColorRed = new JLabel("Hair Color: Red");
+		lblHairColorRed.setForeground(redTextColor);//NEW
 		lblHairColorRed.setFont(new Font("Calibri", Font.BOLD, 13));
-		lblHairColorRed.setBounds(10, 11, 124, 21);
+		lblHairColorRed.setBounds(xRedText, 11, widthTextRed, 21);
 		contentPane.add(lblHairColorRed);
 		
 		JSlider hairRed = new JSlider();
@@ -182,12 +274,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		hairRed.setPaintTicks(true);
 		hairRed.setPaintLabels(true);
 		hairRed.setMaximum(255);
-		hairRed.setBounds(165, 11, 215, 38);
+		hairRed.setBounds(xRedSlider, 11, widthSlider, 38);
 		contentPane.add(hairRed);
 		
 		JLabel lblGreen = new JLabel("Green");
+		lblGreen.setForeground(greenTextColor);//NEW		
 		lblGreen.setFont(new Font("Calibri", Font.BOLD, 13));
-		lblGreen.setBounds(390, 14, 46, 21);
+		lblGreen.setBounds(xGreenText, 14, 46, 21);
 		contentPane.add(lblGreen);
 		
 		JSlider hairGreen = new JSlider();
@@ -195,12 +288,15 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		hairGreen.setPaintLabels(true);
 		hairGreen.setMaximum(255);
 		hairGreen.setMajorTickSpacing(64);
-		hairGreen.setBounds(430, 11, 215, 38);
+		hairGreen.setBounds(xGreenSlider, 11, widthSlider, 38);
 		contentPane.add(hairGreen);
 		
+		
 		JLabel lblBlue = new JLabel("Blue");
+		lblBlue.setForeground(blueTextColor);//NEW
+		lblBlue.setForeground(blueTextColor);//NEW		
 		lblBlue.setFont(new Font("Calibri", Font.BOLD, 13));
-		lblBlue.setBounds(655, 14, 46, 21);
+		lblBlue.setBounds(xBlueText, 14, 46, 21);
 		contentPane.add(lblBlue);
 		
 		JSlider hairBlue = new JSlider();
@@ -209,7 +305,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		hairBlue.setPaintLabels(true);
 		hairBlue.setMaximum(255);
 		hairBlue.setMajorTickSpacing(64);
-		hairBlue.setBounds(688, 11, 215, 38);
+		hairBlue.setBounds(xBlueSlider, 11, widthSlider, 38);
 		contentPane.add(hairBlue);
 		
 		JSlider skinBlue = new JSlider();
@@ -218,12 +314,14 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		skinBlue.setPaintLabels(true);
 		skinBlue.setMaximum(255);
 		skinBlue.setMajorTickSpacing(64);
-		skinBlue.setBounds(688, 60, 215, 38);
+		skinBlue.setBounds(xBlueSlider, 60, widthSlider, 38);
+		skinBlue.setName("skin");//NEW
 		contentPane.add(skinBlue);
 		
 		JLabel label = new JLabel("Blue");
+		label.setForeground(blueTextColor);//NEW
 		label.setFont(new Font("Calibri", Font.BOLD, 13));
-		label.setBounds(655, 63, 46, 21);
+		label.setBounds(xBlueText, 63, 46, 21);
 		contentPane.add(label);
 		
 		JSlider skinGreen = new JSlider();
@@ -232,12 +330,14 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		skinGreen.setPaintLabels(true);
 		skinGreen.setMaximum(255);
 		skinGreen.setMajorTickSpacing(64);
-		skinGreen.setBounds(430, 60, 215, 38);
+		skinGreen.setBounds(xGreenSlider, 60, widthSlider, 38);
+		skinGreen.setName("skin");//NEW
 		contentPane.add(skinGreen);
 		
 		JLabel label_1 = new JLabel("Green");
+		label_1.setForeground(greenTextColor);//NEW
 		label_1.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_1.setBounds(390, 63, 46, 21);
+		label_1.setBounds(xGreenText, 63, 46, 21);
 		contentPane.add(label_1);
 		
 		JSlider skinRed = new JSlider();
@@ -246,12 +346,14 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		skinRed.setPaintLabels(true);
 		skinRed.setMaximum(255);
 		skinRed.setMajorTickSpacing(64);
-		skinRed.setBounds(165, 60, 215, 38);
+		skinRed.setBounds(xRedSlider, 60, widthSlider, 38);
+		skinRed.setName("skin");//NEW
 		contentPane.add(skinRed);
 		
 		JLabel lblSkinColorRed = new JLabel("Skin Color: Red");
+		lblSkinColorRed.setForeground(redTextColor);//NEW
 		lblSkinColorRed.setFont(new Font("Calibri", Font.BOLD, 13));
-		lblSkinColorRed.setBounds(10, 60, 124, 21);
+		lblSkinColorRed.setBounds(xRedText, 60, widthTextRed, 21);
 		contentPane.add(lblSkinColorRed);
 		
 		JSlider metalBlue = new JSlider();
@@ -260,12 +362,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		metalBlue.setPaintLabels(true);
 		metalBlue.setMaximum(255);
 		metalBlue.setMajorTickSpacing(64);
-		metalBlue.setBounds(688, 109, 215, 38);
+		metalBlue.setBounds(xBlueSlider, 109, widthSlider, 38);
 		contentPane.add(metalBlue);
 		
 		JLabel label_3 = new JLabel("Blue");
+		label_3.setForeground(blueTextColor);//NEW
 		label_3.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_3.setBounds(655, 112, 46, 21);
+		label_3.setBounds(xBlueText, 112, 46, 21);
 		contentPane.add(label_3);
 		
 		JSlider metalGreen = new JSlider();
@@ -274,12 +377,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		metalGreen.setPaintLabels(true);
 		metalGreen.setMaximum(255);
 		metalGreen.setMajorTickSpacing(64);
-		metalGreen.setBounds(430, 109, 215, 38);
+		metalGreen.setBounds(xGreenSlider, 109, widthSlider, 38);
 		contentPane.add(metalGreen);
 		
 		JLabel label_4 = new JLabel("Green");
+		label_4.setForeground(greenTextColor);//NEW
 		label_4.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_4.setBounds(390, 112, 46, 21);
+		label_4.setBounds(xGreenText, 112, 46, 21);
 		contentPane.add(label_4);
 		
 		JSlider metalRed = new JSlider();
@@ -288,12 +392,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		metalRed.setPaintLabels(true);
 		metalRed.setMaximum(255);
 		metalRed.setMajorTickSpacing(64);
-		metalRed.setBounds(165, 109, 215, 38);
+		metalRed.setBounds(xRedSlider, 109, widthSlider, 38);
 		contentPane.add(metalRed);
 		
 		JLabel lblArmorMetalColor = new JLabel("Armor Metal Color: Red");
+		lblArmorMetalColor.setForeground(redTextColor);//NEW
 		lblArmorMetalColor.setFont(new Font("Calibri", Font.BOLD, 13));
-		lblArmorMetalColor.setBounds(10, 109, 131, 21);
+		lblArmorMetalColor.setBounds(xRedText, 109, widthTextRed, 21);
 		contentPane.add(lblArmorMetalColor);
 		
 		JSlider trimBlue = new JSlider();
@@ -302,12 +407,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		trimBlue.setPaintLabels(true);
 		trimBlue.setMaximum(255);
 		trimBlue.setMajorTickSpacing(64);
-		trimBlue.setBounds(688, 158, 215, 38);
+		trimBlue.setBounds(xBlueSlider, 158, widthSlider, 38);
 		contentPane.add(trimBlue);
 		
 		JLabel label_6 = new JLabel("Blue");
+		label_6.setForeground(blueTextColor);//NEW
 		label_6.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_6.setBounds(655, 161, 46, 21);
+		label_6.setBounds(xBlueText, 161, 46, 21);
 		contentPane.add(label_6);
 		
 		JSlider trimGreen = new JSlider();
@@ -316,12 +422,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		trimGreen.setPaintLabels(true);
 		trimGreen.setMaximum(255);
 		trimGreen.setMajorTickSpacing(64);
-		trimGreen.setBounds(430, 158, 215, 38);
+		trimGreen.setBounds(xGreenSlider, 158, widthSlider, 38);
 		contentPane.add(trimGreen);
 		
 		JLabel label_7 = new JLabel("Green");
+		label_7.setForeground(greenTextColor);//NEW
 		label_7.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_7.setBounds(390, 161, 46, 21);
+		label_7.setBounds(xGreenText, 161, 46, 21);
 		contentPane.add(label_7);
 		
 		JSlider trimRed = new JSlider();
@@ -330,12 +437,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		trimRed.setPaintLabels(true);
 		trimRed.setMaximum(255);
 		trimRed.setMajorTickSpacing(64);
-		trimRed.setBounds(165, 158, 215, 38);
+		trimRed.setBounds(xRedSlider, 158, widthSlider, 38);
 		contentPane.add(trimRed);
 		
 		JLabel lblMetalTrimColor = new JLabel("Armor Trim Color: Red");
+		lblMetalTrimColor.setForeground(redTextColor);//NEW
 		lblMetalTrimColor.setFont(new Font("Calibri", Font.BOLD, 13));
-		lblMetalTrimColor.setBounds(10, 158, 131, 21);
+		lblMetalTrimColor.setBounds(xRedText, 158, widthTextRed, 21);
 		contentPane.add(lblMetalTrimColor);
 		
 		JSlider clothBlue = new JSlider();
@@ -344,12 +452,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		clothBlue.setPaintLabels(true);
 		clothBlue.setMaximum(255);
 		clothBlue.setMajorTickSpacing(64);
-		clothBlue.setBounds(688, 207, 215, 38);
+		clothBlue.setBounds(xBlueSlider, 207, widthSlider, 38);
 		contentPane.add(clothBlue);
 		
 		JLabel label_9 = new JLabel("Blue");
+		label_9.setForeground(blueTextColor);//NEW
 		label_9.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_9.setBounds(655, 210, 46, 21);
+		label_9.setBounds(xBlueText, 210, 46, 21);
 		contentPane.add(label_9);
 		
 		JSlider clothGreen = new JSlider();
@@ -358,12 +467,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		clothGreen.setPaintLabels(true);
 		clothGreen.setMaximum(255);
 		clothGreen.setMajorTickSpacing(64);
-		clothGreen.setBounds(430, 207, 215, 38);
+		clothGreen.setBounds(xGreenSlider, 207, widthSlider, 38);
 		contentPane.add(clothGreen);
 		
 		JLabel label_10 = new JLabel("Green");
+		label_10.setForeground(greenTextColor);//NEW
 		label_10.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_10.setBounds(390, 210, 46, 21);
+		label_10.setBounds(xGreenText, 210, 46, 21);
 		contentPane.add(label_10);
 		
 		JSlider clothRed = new JSlider();
@@ -372,12 +482,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		clothRed.setPaintLabels(true);
 		clothRed.setMaximum(255);
 		clothRed.setMajorTickSpacing(64);
-		clothRed.setBounds(165, 207, 215, 38);
+		clothRed.setBounds(xRedSlider, 207, widthSlider, 38);
 		contentPane.add(clothRed);
 		
 		JLabel lblArmorClothColor = new JLabel("Armor Cloth Color: Red");
+		lblArmorClothColor.setForeground(redTextColor);//NEW
 		lblArmorClothColor.setFont(new Font("Calibri", Font.BOLD, 13));
-		lblArmorClothColor.setBounds(10, 207, 131, 21);
+		lblArmorClothColor.setBounds(xRedText, 207, widthTextRed, 21);//TODO
 		contentPane.add(lblArmorClothColor);
 		
 		JSlider leatherBlue = new JSlider();
@@ -386,12 +497,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		leatherBlue.setPaintLabels(true);
 		leatherBlue.setMaximum(255);
 		leatherBlue.setMajorTickSpacing(64);
-		leatherBlue.setBounds(688, 256, 215, 38);
+		leatherBlue.setBounds(xBlueSlider, 256, widthSlider, 38);
 		contentPane.add(leatherBlue);
 		
 		JLabel label_12 = new JLabel("Blue");
+		label_12.setForeground(blueTextColor);//NEW
 		label_12.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_12.setBounds(655, 259, 46, 21);
+		label_12.setBounds(xBlueText, 259, 46, 21);
 		contentPane.add(label_12);
 		
 		JSlider leatherGreen = new JSlider();
@@ -400,12 +512,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		leatherGreen.setPaintLabels(true);
 		leatherGreen.setMaximum(255);
 		leatherGreen.setMajorTickSpacing(64);
-		leatherGreen.setBounds(430, 256, 215, 38);
+		leatherGreen.setBounds(xGreenSlider, 256, widthSlider, 38);
 		contentPane.add(leatherGreen);
 		
 		JLabel label_13 = new JLabel("Green");
+		label_13.setForeground(greenTextColor);//NEW
 		label_13.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_13.setBounds(390, 259, 46, 21);
+		label_13.setBounds(xGreenText, 259, 46, 21);
 		contentPane.add(label_13);
 		
 		JSlider leatherRed = new JSlider();
@@ -414,20 +527,28 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		leatherRed.setPaintLabels(true);
 		leatherRed.setMaximum(255);
 		leatherRed.setMajorTickSpacing(64);
-		leatherRed.setBounds(165, 256, 215, 38);
+		leatherRed.setBounds(xRedSlider, 256, widthSlider, 38);
 		contentPane.add(leatherRed);
 		
 		JLabel lblArmorLeatherColor = new JLabel("Armor Leather Color: Red");
+		lblArmorLeatherColor.setForeground(redTextColor);//NEW
 		lblArmorLeatherColor.setFont(new Font("Calibri", Font.BOLD, 13));
-		lblArmorLeatherColor.setBounds(10, 256, 145, 21);
+		lblArmorLeatherColor.setBounds(xRedText, 256, widthTextRed, 21);
 		contentPane.add(lblArmorLeatherColor);
 		
-		portraitPanel = new ImagePanel(path + "resources/BlankPortrait.png");
+
+		
+		portraitPanel = new JLabel();
+		portraitPanel.setIcon(new ImageIcon(path + "resources/BlankPortrait.png"));
 		portraitPanel.setBounds(22, 331, 192, 192);
 		contentPane.add(portraitPanel);
 		
-		tokenPanel = new ImagePanel(path + "resources/BlankTok.png");
+		
+		tokenPanel= new JLabel();
+		tokenPanel.setIcon(new ImageIcon(path + "resources/BlankTok.png"));
 		tokenPanel.setBounds(224, 403, 128, 128);
+		
+		
 		contentPane.add(tokenPanel);
 		
 		JLabel lblHair = new JLabel("Hair");
@@ -484,6 +605,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		comboBox_3.setMaximumRowCount(3);
 		contentPane.add(comboBox_3);
 		
+		//NEW
+		comboBox.setName("portrait");
+		comboBox_1.setName("portrait");
+		comboBox_2.setName("portrait");
+		
+		
 		JLabel lblToken = new JLabel("Token");
 		lblToken.setFont(new Font("Calibri", Font.BOLD, 13));
 		lblToken.setBounds(224, 323, 46, 21);
@@ -497,16 +624,17 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		hairXOffset.setMaximum(20);
 		hairXOffset.setMinimum(-20);
 		hairXOffset.setBounds(373, 403, 151, 38);
+		hairXOffset.setName("offset");//NEW
 		contentPane.add(hairXOffset);
 		
 		JLabel lblXOffset = new JLabel("Y Offset");
 		lblXOffset.setFont(new Font("Calibri", Font.BOLD, 13));
-		lblXOffset.setBounds(373, 383, 46, 21);
+		lblXOffset.setBounds(373, 383, widthTextOffset, 21);//(373, 383, 46, 21)//TODO
 		contentPane.add(lblXOffset);
 		
 		JLabel lblYOffset = new JLabel("X Offset");
 		lblYOffset.setFont(new Font("Calibri", Font.BOLD, 13));
-		lblYOffset.setBounds(373, 452, 46, 21);
+		lblYOffset.setBounds(373, 452, widthTextOffset, 21);
 		contentPane.add(lblYOffset);
 		
 		JSlider hairYOffset = new JSlider();
@@ -517,11 +645,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		hairYOffset.setMaximum(20);
 		hairYOffset.setMajorTickSpacing(10);
 		hairYOffset.setBounds(373, 466, 151, 38);
+		hairYOffset.setName("offset");//NEW
 		contentPane.add(hairYOffset);
 		
 		JLabel label_2 = new JLabel("Y Offset");
 		label_2.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_2.setBounds(557, 386, 46, 21);
+		label_2.setBounds(557, 386, widthTextOffset, 21);
 		contentPane.add(label_2);
 		
 		JSlider faceXOffset = new JSlider();
@@ -532,11 +661,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		faceXOffset.setMaximum(20);
 		faceXOffset.setMajorTickSpacing(10);
 		faceXOffset.setBounds(557, 406, 151, 38);
+		faceXOffset.setName("offset");//NEW
 		contentPane.add(faceXOffset);
 		
 		JLabel label_5 = new JLabel("X Offset");
 		label_5.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_5.setBounds(557, 455, 46, 21);
+		label_5.setBounds(557, 455, widthTextOffset, 21);
 		contentPane.add(label_5);
 		
 		JSlider faceYOffset = new JSlider();
@@ -547,11 +677,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		faceYOffset.setMaximum(20);
 		faceYOffset.setMajorTickSpacing(10);
 		faceYOffset.setBounds(557, 469, 151, 38);
+		faceYOffset.setName("offset");//NEW
 		contentPane.add(faceYOffset);
 		
 		JLabel label_8 = new JLabel("Y Offset");
 		label_8.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_8.setBounds(734, 383, 46, 21);
+		label_8.setBounds(734, 383, widthTextOffset, 21);
 		contentPane.add(label_8);
 		
 		JSlider armorXOffset = new JSlider();
@@ -562,11 +693,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		armorXOffset.setMaximum(20);
 		armorXOffset.setMajorTickSpacing(10);
 		armorXOffset.setBounds(734, 403, 151, 38);
+		armorXOffset.setName("offset");//NEW
 		contentPane.add(armorXOffset);
 		
 		JLabel label_11 = new JLabel("X Offset");
 		label_11.setFont(new Font("Calibri", Font.BOLD, 13));
-		label_11.setBounds(734, 452, 46, 21);
+		label_11.setBounds(734, 452, widthTextOffset, 21);
 		contentPane.add(label_11);
 		
 		JSlider armorYOffset = new JSlider();
@@ -577,12 +709,28 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		armorYOffset.setMaximum(20);
 		armorYOffset.setMajorTickSpacing(10);
 		armorYOffset.setBounds(734, 466, 151, 38);
+		armorYOffset.setName("offset");//NEW
 		contentPane.add(armorYOffset);
 		
-		JButton btnNewButton = new JButton("Export");
+		JButton btnNewButton = new JButton(textExport);
 		btnNewButton.setFont(new Font("Calibri", Font.BOLD, 13));
-		btnNewButton.setBounds(373, 528, 113, 38);
+		btnNewButton.setBounds(400, 528, 113, 38);
 		contentPane.add(btnNewButton);
+		
+		//TODO
+		JButton btnRandomColour = new JButton(textRandomColours);
+		btnRandomColour.setFont(new Font("Calibri", Font.BOLD, 13));
+		btnRandomColour.setBounds(22, 580, 200, 40);
+		contentPane.add(btnRandomColour);
+		
+		//TODO
+		JButton btnRandomPortrait = new JButton(textRandomPortrait);
+		btnRandomPortrait.setFont(new Font("Calibri", Font.BOLD, 13));
+		btnRandomPortrait.setBounds(22, 530, 200, 40);//22, 331
+		contentPane.add(btnRandomPortrait);
+		
+
+		
 		
 		hairRed.addChangeListener(this);
 		hairGreen.addChangeListener(this);
@@ -608,6 +756,8 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		faceYOffset.addChangeListener(this);
 		armorXOffset.addChangeListener(this);
 		armorYOffset.addChangeListener(this);
+		
+		
 		
 		sliders.add(hairRed);
 		sliders.add(hairGreen);
@@ -645,8 +795,10 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		boxes.add(comboBox_3);
 		
 		btnNewButton.addActionListener(this);
+		btnRandomColour.addActionListener(this);
+		btnRandomPortrait.addActionListener(this);
 		
-
+		
 
 	}
 	
@@ -921,16 +1073,19 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			armorYOffsetVal = val;
 			break;
 		default:
-			System.out.println("Switch statement overran");
+			//System.out.println("Switch statement overran");
 		}
-		//System.out.println(src.getName() + " Val: " + val);
+		//System.out.println(src.getName() + " Val: " + val);// src.getName = null
 		drawImages();
-		portraitPanel.setImage(portrait);
+		
+		portraitPanel.setIcon(new ImageIcon(portrait));
 		portraitPanel.repaint();
-		tokenPanel.setImage(token);
+		tokenPanel.setIcon(new ImageIcon(token));
 		tokenPanel.repaint();
+		
 	}
 	
+
 	public void itemStateChanged(ItemEvent event){
 		try {
 			String rawPath = FireEmblemCharacterCreator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -938,7 +1093,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			path = path.substring(0, path.lastIndexOf("/") + 1);
 			path = path.replaceAll("%20", " ");
 			
-			JComboBox<String> src = (JComboBox<String>)event.getSource();
+			JComboBox<String> src = (JComboBox<String>)event.getSource();//unsafe
 			String fileName = (String)src.getSelectedItem();
 			int menuNumber = boxes.indexOf(src);
 			switch(menuNumber){
@@ -972,14 +1127,19 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				}
 				break;
 			default:
-				System.out.println("File Swith OverRun");
+				//System.out.println("File Swith OverRun");
 			}
-			//System.out.println(src.getName() + " FileName: " + fileName);
+			//System.out.println(src.getName() + " FileName: " + fileName);// src.getName = null
 			drawImages();
-			portraitPanel.setImage(portrait);
+			
+			
+		
+			portraitPanel.setIcon(new ImageIcon(portrait));
 			portraitPanel.repaint();
-			tokenPanel.setImage(token);
+			tokenPanel.setIcon(new ImageIcon(token));
 			tokenPanel.repaint();
+			
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -987,27 +1147,104 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	}
 	
 	public void actionPerformed(ActionEvent event){
-		
-		try{	
 
-			String rawPath = FireEmblemCharacterCreator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-			String path = URLDecoder.decode(rawPath, "UTF-8");
-			path = path.substring(0, path.lastIndexOf("/") + 1);
-			path = path.replaceAll("%20", " ");
-			File portraitOutputFile = new File(path + "output.png");
-			try{		
-				ImageIO.write(portrait, "PNG", portraitOutputFile);
-				}
-			catch(IOException e){};
+		String str = event.getActionCommand();
+		System.out.println(">> " + str);
+		switch(str) {
+
+			case textExport:
+				try{	
+		
+					String rawPath = FireEmblemCharacterCreator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+					String path = URLDecoder.decode(rawPath, "UTF-8");
+					path = path.substring(0, path.lastIndexOf("/") + 1);
+					path = path.replaceAll("%20", " ");
+					File portraitOutputFile = new File(path + "output.png");
+					try{		
+						ImageIO.write(portrait, "PNG", portraitOutputFile);
+						}
+					catch(IOException e){};
+					
+					File tokenOutputFile = new File(path + "outputToken.png");
+				
+						ImageIO.write(token, "PNG", tokenOutputFile);
+					}
+				catch(IOException e){};
+				break;
+				
 			
-			File tokenOutputFile = new File(path + "outputToken.png");
-		
-				ImageIO.write(token, "PNG", tokenOutputFile);
+			case textRandomColours://NEW
+				//System.out.println("textRandomColours");
+			{
+				String sliderName;
+				
+				int max ;
+				int min ;
+				int n;
+				int i;
+				int randomNum;
+				
+				
+				for(JSlider slider : sliders) {
+					
+					sliderName = slider.getName();
+					
+					if(sliderName==null) {//colours but not offset or skin
+						
+						max = slider.getMaximum();
+						min = slider.getMinimum();
+						
+						n = max - min + 1;
+						i = Math.abs(rn.nextInt() % n);
+						randomNum =  min + i;
+						
+						slider.setValue(randomNum);
+						
+					}	
+				}	
+				
 			}
-		catch(IOException e){};
+				break;
+			
+				
+				
+			case textRandomPortrait:
+				//System.out.println("textRandomPortrait");
+				//TODO
+			{
+				
+				
+				String boxName;
+				int n;
+				int randomNum;
+				
+				
+				for(JComboBox<String> box : boxes) {
+					
+					boxName = box.getName();
+					
+					if(boxName!=null) {//portraits and not token
+							
+						n = box.getItemCount() ;						
+						randomNum = Math.abs(rn.nextInt() % n);
+						
+						System.out.println(randomNum + "/" + n);
+						box.setSelectedIndex(randomNum);
+						
+					}	
+				}
+			}
+				break;
+			
+			
+			
+			
+			}
+		}
 
-	}
+	
+	
+
 	
 }
-
 
