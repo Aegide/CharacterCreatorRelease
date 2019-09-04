@@ -1,4 +1,4 @@
-package characterCreator;
+//package characterCreator;
 
 
 import java.awt.Color;
