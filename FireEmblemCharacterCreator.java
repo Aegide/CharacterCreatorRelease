@@ -33,6 +33,7 @@ import javax.swing.JButton;
 
 public class FireEmblemCharacterCreator extends JFrame implements ChangeListener, ItemListener, ActionListener {
 	
+	private static final long serialVersionUID = 1L;
 	BufferedImage portrait;
 	BufferedImage token;
 	BufferedImage hair;
