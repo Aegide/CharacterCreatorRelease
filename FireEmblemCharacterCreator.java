@@ -23,11 +23,7 @@ import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URL;
 import java.net.URLDecoder;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -104,20 +100,6 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-
-				/*
-				String rawPath = System.getProperty("user.dir");
-				//System.out.println("Working Directory = " + rawPath);
-
-				Path path_src = Paths.get(rawPath);
-				System.out.println("SRC = " + path_src);
-
-				Path path_resx = Paths.get(rawPath, "resources");
-				System.out.println("RESX = " + path_resx);
-				*/
-				
-
-				
 				try {
 					FireEmblemCharacterCreator frame = new FireEmblemCharacterCreator();
 					frame.setVisible(true);
@@ -125,8 +107,6 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
-				
 			}
 		});
 	}
@@ -137,46 +117,50 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	 */
 	public FireEmblemCharacterCreator() throws UnsupportedEncodingException {
 		
-		String rawPath = System.getProperty("user.dir");
-		Path path = Paths.get(rawPath);
-		Path path_resx = Paths.get(rawPath, "resources");
 
-		folder = new File(path_resx.toUri());
-		listOfFiles = folder.listFiles();
+		
+		String rawPath = FireEmblemCharacterCreator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		
+		System.out.println("rawPath : " + rawPath);
+		
+
+
+		String path = URLDecoder.decode(rawPath, "UTF-8");
+		path = path.substring(0, path.lastIndexOf("/") + 1);
+		path = path.replaceAll("%20", " ");
+		folder = new File(path + "resources");	
+		listOfFiles  = folder.listFiles();
+		
+		
+		
 		
 		hair = null;
 		try {
 		    hair = ImageIO.read(new File(path + "resources/Empty.png"));
 		} catch (IOException ex) {
-			System.out.println(ex);
 		}
 		
 		hairb = null;
 		try {
 		    hairb = ImageIO.read(new File(path + "resources/Empty.png"));
 		} catch (IOException ex) {
-			System.out.println(ex);
 		}
 		
 		face = null;
 		try {
 		    face = ImageIO.read(new File(path + "resources/Empty.png"));
 		} catch (IOException ex) {
-			System.out.println(ex);
 		}
 		
 		armor = null;
 		try {
 		    armor = ImageIO.read(new File(path + "resources/Empty.png"));
 		} catch (IOException ex) {
-			System.out.println(ex);
 		}
-
 		portrait = null;
 		try {
 		    portrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
 		} catch (IOException ex) {
-			System.out.println(ex);
 		}
 		//System.out.println("portrait is null: " + (portrait == null));//EDIT
 		
@@ -184,14 +168,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		try {
 		    token = ImageIO.read(new File(path + "resources/BlankTok.png"));
 		} catch (IOException ex) {
-			System.out.println(ex);
 		}
 		
 		blankPortrait = null;
 		try {
 		    blankPortrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
 		} catch (IOException ex) {
-			System.out.println(ex);
 		}
 		//System.out.println("blankPortrait is null: " + (blankPortrait == null));//EDIT
 		
@@ -199,14 +181,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		try {
 		    blankToken = ImageIO.read(new File(path + "resources/BlankTok.png"));
 		} catch (IOException ex) {
-			System.out.println(ex);
 		}
 		
 		importedToken = null;
 		try {
 		    importedToken = ImageIO.read(new File(path + "resources/BlankTok.png"));
 		} catch (IOException ex) {
-			System.out.println(ex);
 		}
 		
 		
@@ -1247,4 +1227,5 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 
 	
 }
+
 
