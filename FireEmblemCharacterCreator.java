@@ -49,6 +49,8 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	BufferedImage blankToken;
 	BufferedImage importedToken;
 	
+	CreatorComposant CCface;
+
 	JLabel portraitPanel;
 	JLabel tokenPanel;
 	
@@ -80,8 +82,6 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	
 	int hairXOffsetVal=0;
 	int hairYOffsetVal=0;
-	int faceXOffsetVal=0;
-	int faceYOffsetVal=0;
 	int armorXOffsetVal=0;
 	int armorYOffsetVal=0;
 	
@@ -148,9 +148,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			System.out.println(ex);
 		}
 		
-		face = null;
+		CCface = null;
 		try {
-		    face = ImageIO.read(new File(path + "resources/Empty.png"));
+		    CCface = new CreatorComposant(ImageIO.read(new File(path + "resources/Empty.png")));
 		} catch (IOException ex) {
 			System.out.println(ex);
 		}
@@ -836,11 +836,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				portrait.setRGB(i*2+1, j*2+1, newPixel.getRGB());
 			}
 		}
+		
 		for(int i = 0; i<96; i++){
 			for(int j = 0; j<96; j++){
-				if (i-faceYOffsetVal <0 || i- faceYOffsetVal>95) continue;
-				if (j+faceXOffsetVal<0 || j+ faceXOffsetVal>95)continue;
-				pixel = new Color(face.getRGB(i-faceYOffsetVal, j+faceXOffsetVal),true);
+				if (i-CCface.YOffset<0 || i-CCface.YOffset>95) continue;
+				if (j+CCface.XOffset<0 || j+CCface.XOffset>95)continue;
+				pixel = new Color(CCface.BI.getRGB(i-CCface.YOffset, j+CCface.XOffset),true);
 				if(pixel.getAlpha()==0){
 					continue;
 				}
@@ -852,6 +853,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				portrait.setRGB(i*2+1, j*2+1, newPixel.getRGB());
 			}
 		}
+
 		for(int i = 0; i<96; i++){
 			for(int j = 0; j<96; j++){
 				if (i-hairYOffsetVal <0 || i- hairYOffsetVal>95) continue;
@@ -1050,10 +1052,10 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			hairYOffsetVal = val;
 			break;
 		case 20:
-			faceXOffsetVal = val;
+			CCface.XOffset = val;
 			break;
 		case 21:
-			faceYOffsetVal = val;
+			CCface.YOffset = val;
 			break;
 		case 22:
 			armorXOffsetVal = val;
@@ -1101,7 +1103,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				break;
 			case 1:
 				try {
-				    face = ImageIO.read(new File(path + "resources/" + fileName));
+				    CCface.BI = ImageIO.read(new File(path + "resources/" + fileName));
 				} catch (IOException ex) {
 					System.out.println(ex);
 				}
