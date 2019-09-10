@@ -798,6 +798,27 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		 return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 		}
 	
+
+	void pixelIteration(CreatorComposant cc){
+		Color pixel = null;
+		Color newPixel = null;
+		for(int i = 0; i<96; i++){
+			for(int j = 0; j<96; j++){
+				if (i-cc.YOffset<0 || i-cc.YOffset>95) continue;
+				if (j+cc.XOffset<0 || j+cc.XOffset>95)continue;
+				pixel = new Color(cc.BI.getRGB(i-cc.YOffset, j+cc.XOffset),true);
+				if(pixel.getAlpha()==0){
+					continue;
+				}
+				newPixel = pixelParser(pixel);
+				portrait.setRGB(i*2, j*2, newPixel.getRGB());
+				portrait.setRGB(i*2+1, j*2, newPixel.getRGB());
+				portrait.setRGB(i*2, j*2+1, newPixel.getRGB());
+				portrait.setRGB(i*2+1, j*2+1, newPixel.getRGB());
+			}
+		}
+	}
+
 	void drawImages(){
 		portrait = deepCopy(blankPortrait);
 		token = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
@@ -812,8 +833,6 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 					continue;
 				}
 				newPixel = pixelParser(pixel);
-				//newPixel = pixel;
-				//System.out.println(newPixel.getRed());
 				portrait.setRGB(i*2, j*2, newPixel.getRGB());
 				portrait.setRGB(i*2+1, j*2, newPixel.getRGB());
 				portrait.setRGB(i*2, j*2+1, newPixel.getRGB());
@@ -829,30 +848,14 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 					continue;
 				}
 				newPixel = pixelParser(pixel);
-				//newPixel = pixel;
 				portrait.setRGB(i*2, j*2, newPixel.getRGB());
 				portrait.setRGB(i*2+1, j*2, newPixel.getRGB());
 				portrait.setRGB(i*2, j*2+1, newPixel.getRGB());
 				portrait.setRGB(i*2+1, j*2+1, newPixel.getRGB());
 			}
 		}
-		
-		for(int i = 0; i<96; i++){
-			for(int j = 0; j<96; j++){
-				if (i-CCface.YOffset<0 || i-CCface.YOffset>95) continue;
-				if (j+CCface.XOffset<0 || j+CCface.XOffset>95)continue;
-				pixel = new Color(CCface.BI.getRGB(i-CCface.YOffset, j+CCface.XOffset),true);
-				if(pixel.getAlpha()==0){
-					continue;
-				}
-				newPixel = pixelParser(pixel);
-				//newPixel = pixel;
-				portrait.setRGB(i*2, j*2, newPixel.getRGB());
-				portrait.setRGB(i*2+1, j*2, newPixel.getRGB());
-				portrait.setRGB(i*2, j*2+1, newPixel.getRGB());
-				portrait.setRGB(i*2+1, j*2+1, newPixel.getRGB());
-			}
-		}
+
+		pixelIteration(CCface);
 
 		for(int i = 0; i<96; i++){
 			for(int j = 0; j<96; j++){
@@ -863,7 +866,6 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				if(pixel.getAlpha()==0){
 					continue;
 				}
-				//newPixel = pixel;
 				portrait.setRGB(i*2, j*2, newPixel.getRGB());
 				portrait.setRGB(i*2+1, j*2, newPixel.getRGB());
 				portrait.setRGB(i*2, j*2+1, newPixel.getRGB());
@@ -878,8 +880,6 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 					continue;
 				}
 				newPixel = pixelParser(pixel);
-				//System.out.println(pixel.getRed() + " " + pixel.getGreen() + " " + pixel.getBlue());
-				//newPixel = pixel;
 				token.setRGB(i*2, j*2, newPixel.getRGB());
 				token.setRGB(i*2+1, j*2, newPixel.getRGB());
 				token.setRGB(i*2, j*2+1, newPixel.getRGB());
