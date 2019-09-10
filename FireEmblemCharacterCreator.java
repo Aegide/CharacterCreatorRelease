@@ -43,13 +43,18 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	BufferedImage token;
 	BufferedImage hair;
 	BufferedImage hairb;
-	BufferedImage face;
-	BufferedImage armor;
+	//BufferedImage face;
+	//BufferedImage armor;
 	BufferedImage blankPortrait;
 	BufferedImage blankToken;
 	BufferedImage importedToken;
 	
+
+	//CreatorComposant CChair;
+	//CreatorComposant CChairb;
 	CreatorComposant CCface;
+	CreatorComposant CCarmor;
+	
 
 	JLabel portraitPanel;
 	JLabel tokenPanel;
@@ -155,9 +160,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			System.out.println(ex);
 		}
 		
-		armor = null;
+		CCarmor = null;
 		try {
-		    armor = ImageIO.read(new File(path + "resources/Empty.png"));
+		    CCarmor = new CreatorComposant(ImageIO.read(new File(path + "resources/Empty.png")));
 		} catch (IOException ex) {
 			System.out.println(ex);
 		}
@@ -805,7 +810,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		for(int i = 0; i<96; i++){
 			for(int j = 0; j<96; j++){
 				if (i-cc.YOffset<0 || i-cc.YOffset>95) continue;
-				if (j+cc.XOffset<0 || j+cc.XOffset>95)continue;
+				if (j+cc.XOffset<0 || j+cc.XOffset>95) continue;
 				pixel = new Color(cc.BI.getRGB(i-cc.YOffset, j+cc.XOffset),true);
 				if(pixel.getAlpha()==0){
 					continue;
@@ -824,10 +829,11 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		token = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
 		Color pixel = null;
 		Color newPixel = null;
+
 		for(int i = 0; i<96; i++){
 			for(int j = 0; j<96; j++){
 				if (i-hairYOffsetVal <0 || i- hairYOffsetVal>95) continue;
-				if (j+hairXOffsetVal<0 || j+ hairXOffsetVal>95)continue;
+				if (j+hairXOffsetVal<0 || j+ hairXOffsetVal>95) continue;
 				pixel = new Color(hairb.getRGB(i-hairYOffsetVal, j+hairXOffsetVal),true);
 				if(pixel.getAlpha()==0){
 					continue;
@@ -839,21 +845,8 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				portrait.setRGB(i*2+1, j*2+1, newPixel.getRGB());
 			}
 		}
-		for(int i = 0; i<96; i++){
-			for(int j = 0; j<96; j++){
-				if (i-armorYOffsetVal <0 || i- armorYOffsetVal>95) continue;
-				if (j+armorXOffsetVal<0 || j+ armorXOffsetVal>95)continue;
-				pixel = new Color(armor.getRGB(i-armorYOffsetVal, j+armorXOffsetVal),true);
-				if(pixel.getAlpha()==0){
-					continue;
-				}
-				newPixel = pixelParser(pixel);
-				portrait.setRGB(i*2, j*2, newPixel.getRGB());
-				portrait.setRGB(i*2+1, j*2, newPixel.getRGB());
-				portrait.setRGB(i*2, j*2+1, newPixel.getRGB());
-				portrait.setRGB(i*2+1, j*2+1, newPixel.getRGB());
-			}
-		}
+
+		pixelIteration(CCarmor);
 
 		pixelIteration(CCface);
 
@@ -873,6 +866,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			}
 		}
 		
+		//TODO : different
 		for(int i = 0; i<64; i++){
 			for(int j = 0; j<64; j++){
 				pixel = new Color(importedToken.getRGB(i, j),true);
@@ -1058,10 +1052,10 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			CCface.YOffset = val;
 			break;
 		case 22:
-			armorXOffsetVal = val;
+			CCarmor.XOffset = val;
 			break;
 		case 23:
-			armorYOffsetVal = val;
+			CCarmor.YOffset = val;
 			break;
 		default:
 			//System.out.println("Switch statement overran");
@@ -1110,7 +1104,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				break;
 			case 2:
 				try {
-				    armor = ImageIO.read(new File(path + "resources/" + fileName));
+				    CCarmor.BI = ImageIO.read(new File(path + "resources/" + fileName));
 				} catch (IOException ex) {
 					System.out.println(ex);
 				}
