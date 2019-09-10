@@ -138,55 +138,64 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		try {
 		    hair = ImageIO.read(new File(path + "resources/Empty.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		
 		hairb = null;
 		try {
 		    hairb = ImageIO.read(new File(path + "resources/Empty.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		
 		face = null;
 		try {
 		    face = ImageIO.read(new File(path + "resources/Empty.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		
 		armor = null;
 		try {
 		    armor = ImageIO.read(new File(path + "resources/Empty.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		portrait = null;
 		try {
 		    portrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
-		//System.out.println("portrait is null: " + (portrait == null));//EDIT
+
 		
 		token = null;
 		try {
 		    token = ImageIO.read(new File(path + "resources/BlankTok.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		
 		blankPortrait = null;
 		try {
 		    blankPortrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
-		//System.out.println("blankPortrait is null: " + (blankPortrait == null));//EDIT
+		
 		
 		blankToken = null;
 		try {
 		    blankToken = ImageIO.read(new File(path + "resources/BlankTok.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		
 		importedToken = null;
 		try {
 		    importedToken = ImageIO.read(new File(path + "resources/BlankTok.png"));
 		} catch (IOException ex) {
+			System.out.println(ex);
 		}
 		
 		
@@ -1081,29 +1090,34 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				try {
 				    hair = ImageIO.read(new File(path + "resources/" + fileName));
 				} catch (IOException ex) {
+					System.out.println(ex);
 				}
 				try {
 					String secondFileName = fileName.substring(0, fileName.length()-4);
 				    hairb = ImageIO.read(new File(path + "resources/" + secondFileName + "b.png"));
 				} catch (IOException ex) {
+					System.out.println(ex);
 				}
 				break;
 			case 1:
 				try {
 				    face = ImageIO.read(new File(path + "resources/" + fileName));
 				} catch (IOException ex) {
+					System.out.println(ex);
 				}
 				break;
 			case 2:
 				try {
 				    armor = ImageIO.read(new File(path + "resources/" + fileName));
 				} catch (IOException ex) {
+					System.out.println(ex);
 				}
 				break;
 			case 3:
 				try {
 				    importedToken = ImageIO.read(new File(path + "resources/" + fileName));
 				} catch (IOException ex) {
+					System.out.println(ex);
 				}
 				break;
 			default:
@@ -1143,13 +1157,17 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 					try{		
 						ImageIO.write(portrait, "PNG", portraitOutputFile);
 						}
-					catch(IOException e){};
+					catch(IOException ex){
+						System.out.println(ex);
+					};
 					
 					File tokenOutputFile = new File(path + "outputToken.png");
 				
 						ImageIO.write(token, "PNG", tokenOutputFile);
 					}
-				catch(IOException e){};
+				catch(IOException ex){
+					System.out.println(ex);
+				};
 				break;
 				
 			
