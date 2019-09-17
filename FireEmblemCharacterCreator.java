@@ -812,7 +812,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		for(int i = 0; i<cc.IJmax; i++){
 			for(int j = 0; j<cc.IJmax; j++){
 				if(isToken){
-					pixel = new Color(importedToken.getRGB(i, j),true);
+					pixel = new Color(cc.BI.getRGB(i, j),true);
 					if(pixel.getAlpha()==0){
 						continue;
 					}
@@ -1112,7 +1112,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				break;
 			case 3:
 				try {
-				    importedToken = ImageIO.read(new File(path + "resources/" + fileName));
+					CCimportedToken.BI = ImageIO.read(new File(path + "resources/" + fileName)); 
 				} catch (IOException ex) {
 					System.out.println(ex);
 				}
