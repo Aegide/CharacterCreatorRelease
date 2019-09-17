@@ -665,7 +665,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 
 		
 		//TODO : factor this
-		hairRed.addCh4angeListener(this);
+		hairRed.addChangeListener(this);
 		hairGreen.addChangeListener(this);
 		hairBlue.addChangeListener(this);
 		skinRed.addChangeListener(this);
