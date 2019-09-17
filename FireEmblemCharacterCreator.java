@@ -43,11 +43,8 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	BufferedImage token;
 	BufferedImage hair;
 	BufferedImage hairb;
-	//BufferedImage face;
-	//BufferedImage armor;
 	BufferedImage blankPortrait;
 	BufferedImage blankToken;
-	BufferedImage importedToken;
 	
 
 	CreatorComposant CCimportedToken;
@@ -155,19 +152,11 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			System.out.println(ex);
 		}
 		
-		CCface = null;
-		try {
-		    CCface = new CreatorComposant(ImageIO.read(new File(path + "resources/Empty.png")), 96);
-		} catch (IOException ex) {
-			System.out.println(ex);
-		}
-		
-		CCarmor = null;
-		try {
-		    CCarmor = new CreatorComposant(ImageIO.read(new File(path + "resources/Empty.png")), 96);
-		} catch (IOException ex) {
-			System.out.println(ex);
-		}
+		CCface = new CreatorComposant(path + "resources/Empty.png", 96);
+
+
+		CCarmor = new CreatorComposant(path + "resources/Empty.png", 96);
+
 
 		portrait = null;
 		try {
@@ -198,13 +187,8 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			System.out.println(ex);
 		}
 		
-		CCimportedToken = null;
-		try {
-			CCimportedToken = new CreatorComposant(ImageIO.read(new File(path + "resources/BlankTok.png")), 64);
-		} catch (IOException ex) {
-			System.out.println(ex);
-		}
-		
+		CCimportedToken = new CreatorComposant(path + "resources/BlankTok.png", 64);
+
 		
 		
 		
