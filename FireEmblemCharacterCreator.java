@@ -39,21 +39,17 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	BufferedImage portrait;//drawImages
-	BufferedImage token;//drawImages
-	BufferedImage blankPortrait;//drawImages
-
-	BufferedImage hair;
-	BufferedImage hairb;
+	//drawImages
+	BufferedImage portrait;		
+	BufferedImage token;		
+	BufferedImage blankPortrait;
 
 	CreatorComposant CCimportedToken;
-	//CreatorComposant CChair;
-	//CreatorComposant CChairb;
+	CreatorComposant CChair;
+	CreatorComposant CChairb;
 	CreatorComposant CCface;
 	CreatorComposant CCarmor;
 	
-	
-
 	JLabel portraitPanel;
 	JLabel tokenPanel;
 	
@@ -72,22 +68,17 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	
 	Color skinColor = new Color(192,140,110,255);
 	Color hairColor = new Color(64,50,25,255);
-	Color metalColor= new Color(100,100,100,255);
-	Color trimColor= new Color(247,173,82,255);
-	Color clothColor= new Color(82,82,115,255);
-	Color leatherColor= new Color(148,100,66,255);
+	Color metalColor = new Color(100,100,100,255);
+	Color trimColor = new Color(247,173,82,255);
+	Color clothColor = new Color(82,82,115,255);
+	Color leatherColor = new Color(148,100,66,255);
 	Color outlineColor = new Color(0,0,0,255);
 	Color blankColor = new Color(0,0,0,0);
 	
 	Color redTextColor = new Color(150,0,0,255);
 	Color greenTextColor = new Color(0,150,0,255);
 	Color blueTextColor = new Color(0,0,150,255);
-	
-	int hairXOffsetVal=0;
-	int hairYOffsetVal=0;
-	int armorXOffsetVal=0;
-	int armorYOffsetVal=0;
-	
+
 	File folder;
 	File[] listOfFiles;
 	ArrayList<String> hairs = new ArrayList<String>();
@@ -106,7 +97,6 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				try {
 					FireEmblemCharacterCreator frame = new FireEmblemCharacterCreator();
 					frame.setVisible(true);
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -120,43 +110,23 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	 */
 	public FireEmblemCharacterCreator() throws UnsupportedEncodingException {
 		
-
-		
 		String rawPath = FireEmblemCharacterCreator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		
 		System.out.println("rawPath : " + rawPath);
-		
 
-
+		// TODO : better path
 		String path = URLDecoder.decode(rawPath, "UTF-8");
 		path = path.substring(0, path.lastIndexOf("/") + 1);
 		path = path.replaceAll("%20", " ");
 		folder = new File(path + "resources");	
 		listOfFiles  = folder.listFiles();
 		
-		
-		
-		
-		hair = null;
-		try {
-		    hair = ImageIO.read(new File(path + "resources/Empty.png"));
-		} catch (IOException ex) {
-			System.out.println(ex);
-		}
-		
-		hairb = null;
-		try {
-		    hairb = ImageIO.read(new File(path + "resources/Empty.png"));
-		} catch (IOException ex) {
-			System.out.println(ex);
-		}
-		
+		CChair = new CreatorComposant(path + "resources/Empty.png", 96);
+		CChairb = new CreatorComposant(path + "resources/Empty.png", 96);
 		CCface = new CreatorComposant(path + "resources/Empty.png", 96);
-
-
 		CCarmor = new CreatorComposant(path + "resources/Empty.png", 96);
+		CCimportedToken = new CreatorComposant(path + "resources/BlankTok.png", 64);
 
-
+		//TODO : factor this
 		portrait = null;
 		try {
 		    portrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
@@ -178,13 +148,8 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			System.out.println(ex);
 		}
 		
-
-		CCimportedToken = new CreatorComposant(path + "resources/BlankTok.png", 64);
-
 		
-		
-		
-		//TODO
+		//TODO : factor this
 		int initialWidth = 1000;//932
 		int initialHeight = 700;//610	
 		int border = 5;//5 (useless ?)
@@ -215,14 +180,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		
 		
 		
-		//TODO
+		//TODO : factor this ??
 		
 		
 		setFont(new Font("Calibri", Font.BOLD, 12));
 		setTitle("Fire Emblem Character Creator - Custom build");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
+
 		setBounds(100, 100, initialWidth, initialHeight);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(border, border, border, border));//setBorder() useless ?
@@ -230,9 +194,6 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		contentPane.setLayout(null);
 		
 		//RED(y) : 11 , 60 , 109, 158 , 256 => 49
-		
-		
-		
 		
 		JLabel lblHairColorRed = new JLabel("Hair Color: Red");
 		lblHairColorRed.setForeground(redTextColor);//NEW
@@ -703,8 +664,8 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		
 
 		
-		
-		hairRed.addChangeListener(this);
+		//TODO : factor this
+		hairRed.addCh4angeListener(this);
 		hairGreen.addChangeListener(this);
 		hairBlue.addChangeListener(this);
 		skinRed.addChangeListener(this);
@@ -730,7 +691,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		armorYOffset.addChangeListener(this);
 		
 		
-		
+		//TODO : factor this
 		sliders.add(hairRed);
 		sliders.add(hairGreen);
 		sliders.add(hairBlue);
@@ -782,7 +743,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		}
 	
 
-	void pixelIteration(CreatorComposant cc, BufferedImage destination, boolean isToken){
+	void pixelIteration(CreatorComposant cc, BufferedImage destination, boolean isToken, boolean isRegular ){
 		Color pixel = null;
 		Color newPixel = null;
 		for(int i = 0; i<cc.IJmax; i++){
@@ -797,13 +758,21 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				else{
 					if (i - cc.YOffset < 0 || i - cc.YOffset > cc.IJmax - 1 ) continue;
 					if (j + cc.XOffset < 0 || j + cc.XOffset > cc.IJmax - 1 ) continue;
-					pixel = new Color(cc.BI.getRGB(i-cc.YOffset, j+cc.XOffset),true);
-					if(pixel.getAlpha()==0){
-						continue;
+					if(isRegular){
+						pixel = new Color(cc.BI.getRGB(i-cc.YOffset, j+cc.XOffset),true);
+						if(pixel.getAlpha()==0){
+							continue;
+						}
+						newPixel = pixelParser(pixel);
 					}
-					newPixel = pixelParser(pixel);
+					else{
+						pixel = new Color(cc.BI.getRGB(i-cc.YOffset, j+cc.XOffset),true);
+						newPixel = pixelParser(pixel);
+						if(pixel.getAlpha()==0){
+							continue;
+						}
+					}
 				}
-				
 				destination.setRGB(i*2, j*2, newPixel.getRGB());
 				destination.setRGB(i*2+1, j*2, newPixel.getRGB());
 				destination.setRGB(i*2, j*2+1, newPixel.getRGB());
@@ -816,49 +785,11 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		portrait = deepCopy(blankPortrait);
 		token = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
 
-		Color pixel = null;
-		Color newPixel = null;
-
-		for(int i = 0; i<96; i++){
-			for(int j = 0; j<96; j++){
-				if (i-hairYOffsetVal <0 || i- hairYOffsetVal>95) continue;
-				if (j+hairXOffsetVal<0 || j+ hairXOffsetVal>95) continue;
-				pixel = new Color(hairb.getRGB(i-hairYOffsetVal, j+hairXOffsetVal),true);
-				if(pixel.getAlpha()==0){
-					continue;
-				}
-				newPixel = pixelParser(pixel);
-				portrait.setRGB(i*2, j*2, newPixel.getRGB());
-				portrait.setRGB(i*2+1, j*2, newPixel.getRGB());
-				portrait.setRGB(i*2, j*2+1, newPixel.getRGB());
-				portrait.setRGB(i*2+1, j*2+1, newPixel.getRGB());
-			}
-		}
-
-		pixelIteration(CCarmor, portrait, false);
-
-		pixelIteration(CCface, portrait, false);
-
-		for(int i = 0; i<96; i++){
-			for(int j = 0; j<96; j++){
-				if (i-hairYOffsetVal <0 || i- hairYOffsetVal>95) continue;
-				if (j+hairXOffsetVal<0 || j+ hairXOffsetVal>95)continue;
-				pixel = new Color(hair.getRGB(i-hairYOffsetVal, j+hairXOffsetVal),true);
-				newPixel = pixelParser(pixel);
-				if(pixel.getAlpha()==0){
-					continue;
-				}
-				portrait.setRGB(i*2, j*2, newPixel.getRGB());
-				portrait.setRGB(i*2+1, j*2, newPixel.getRGB());
-				portrait.setRGB(i*2, j*2+1, newPixel.getRGB());
-				portrait.setRGB(i*2+1, j*2+1, newPixel.getRGB());
-			}
-		}
-		
-		pixelIteration(CCimportedToken, token, true);//TODO
-
-
-		
+		pixelIteration(CChairb , portrait, false, true);
+		pixelIteration(CCarmor , portrait, false, true);
+		pixelIteration(CCface , portrait, false, true);
+		pixelIteration(CChair , portrait, false, false);	
+		pixelIteration(CCimportedToken	, token, true, true);
 	}
 	
 	Color pixelParser(Color pixel){
@@ -1018,10 +949,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			leatherColor = new Color(red,green,val);
 			break;
 		case 18:
-			hairXOffsetVal = val;
+			CChair.XOffset = val;
+			CChairb.XOffset = val;
 			break;
 		case 19:
-			hairYOffsetVal = val;
+			CChair.YOffset = val;
+			CChairb.YOffset = val;
 			break;
 		case 20:
 			CCface.XOffset = val;
@@ -1062,13 +995,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			switch(menuNumber){
 			case 0:
 				try {
-				    hair = ImageIO.read(new File(path + "resources/" + fileName));
-				} catch (IOException ex) {
-					System.out.println(ex);
-				}
-				try {
+					CChair.BI = ImageIO.read(new File(path + "resources/" + fileName));
 					String secondFileName = fileName.substring(0, fileName.length()-4);
-				    hairb = ImageIO.read(new File(path + "resources/" + secondFileName + "b.png"));
+					CChairb.BI = ImageIO.read(new File(path + "resources/" + secondFileName + "b.png"));
 				} catch (IOException ex) {
 					System.out.println(ex);
 				}
@@ -1186,11 +1115,5 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				break;
 			}
 		}
-
-	
-	
-
 	
 }
-
-
