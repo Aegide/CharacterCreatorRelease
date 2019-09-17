@@ -50,10 +50,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	BufferedImage importedToken;
 	
 
+	CreatorComposant CCimportedToken;
 	//CreatorComposant CChair;
 	//CreatorComposant CChairb;
 	CreatorComposant CCface;
 	CreatorComposant CCarmor;
+	
 	
 
 	JLabel portraitPanel;
@@ -155,17 +157,18 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		
 		CCface = null;
 		try {
-		    CCface = new CreatorComposant(ImageIO.read(new File(path + "resources/Empty.png")));
+		    CCface = new CreatorComposant(ImageIO.read(new File(path + "resources/Empty.png")), 96);
 		} catch (IOException ex) {
 			System.out.println(ex);
 		}
 		
 		CCarmor = null;
 		try {
-		    CCarmor = new CreatorComposant(ImageIO.read(new File(path + "resources/Empty.png")));
+		    CCarmor = new CreatorComposant(ImageIO.read(new File(path + "resources/Empty.png")), 96);
 		} catch (IOException ex) {
 			System.out.println(ex);
 		}
+
 		portrait = null;
 		try {
 		    portrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
@@ -173,7 +176,6 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			System.out.println(ex);
 		}
 
-		
 		token = null;
 		try {
 		    token = ImageIO.read(new File(path + "resources/BlankTok.png"));
@@ -196,9 +198,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			System.out.println(ex);
 		}
 		
-		importedToken = null;
+		CCimportedToken = null;
 		try {
-		    importedToken = ImageIO.read(new File(path + "resources/BlankTok.png"));
+			CCimportedToken = new CreatorComposant(ImageIO.read(new File(path + "resources/BlankTok.png")), 64);
 		} catch (IOException ex) {
 			System.out.println(ex);
 		}
@@ -804,22 +806,32 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		}
 	
 
-	void pixelIteration(CreatorComposant cc){
+	void pixelIteration(CreatorComposant cc, BufferedImage destination, boolean isToken){
 		Color pixel = null;
 		Color newPixel = null;
-		for(int i = 0; i<96; i++){
-			for(int j = 0; j<96; j++){
-				if (i-cc.YOffset<0 || i-cc.YOffset>95) continue;
-				if (j+cc.XOffset<0 || j+cc.XOffset>95) continue;
-				pixel = new Color(cc.BI.getRGB(i-cc.YOffset, j+cc.XOffset),true);
-				if(pixel.getAlpha()==0){
-					continue;
+		for(int i = 0; i<cc.IJmax; i++){
+			for(int j = 0; j<cc.IJmax; j++){
+				if(isToken){
+					pixel = new Color(importedToken.getRGB(i, j),true);
+					if(pixel.getAlpha()==0){
+						continue;
+					}
+					newPixel = pixelParser(pixel);
 				}
-				newPixel = pixelParser(pixel);
-				portrait.setRGB(i*2, j*2, newPixel.getRGB());
-				portrait.setRGB(i*2+1, j*2, newPixel.getRGB());
-				portrait.setRGB(i*2, j*2+1, newPixel.getRGB());
-				portrait.setRGB(i*2+1, j*2+1, newPixel.getRGB());
+				else{
+					if (i - cc.YOffset < 0 || i - cc.YOffset > cc.IJmax - 1 ) continue;
+					if (j + cc.XOffset < 0 || j + cc.XOffset > cc.IJmax - 1 ) continue;
+					pixel = new Color(cc.BI.getRGB(i-cc.YOffset, j+cc.XOffset),true);
+					if(pixel.getAlpha()==0){
+						continue;
+					}
+					newPixel = pixelParser(pixel);
+				}
+				
+				destination.setRGB(i*2, j*2, newPixel.getRGB());
+				destination.setRGB(i*2+1, j*2, newPixel.getRGB());
+				destination.setRGB(i*2, j*2+1, newPixel.getRGB());
+				destination.setRGB(i*2+1, j*2+1, newPixel.getRGB());
 			}
 		}
 	}
@@ -846,9 +858,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			}
 		}
 
-		pixelIteration(CCarmor);
+		pixelIteration(CCarmor, portrait, false);
 
-		pixelIteration(CCface);
+		pixelIteration(CCface, portrait, false);
 
 		for(int i = 0; i<96; i++){
 			for(int j = 0; j<96; j++){
@@ -866,20 +878,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			}
 		}
 		
-		//TODO : different
-		for(int i = 0; i<64; i++){
-			for(int j = 0; j<64; j++){
-				pixel = new Color(importedToken.getRGB(i, j),true);
-				if(pixel.getAlpha()==0){
-					continue;
-				}
-				newPixel = pixelParser(pixel);
-				token.setRGB(i*2, j*2, newPixel.getRGB());
-				token.setRGB(i*2+1, j*2, newPixel.getRGB());
-				token.setRGB(i*2, j*2+1, newPixel.getRGB());
-				token.setRGB(i*2+1, j*2+1, newPixel.getRGB());
-			}
-		}
+		pixelIteration(CCimportedToken, token, true);//TODO
+
+
 		
 	}
 	
@@ -1122,13 +1123,10 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			//System.out.println(src.getName() + " FileName: " + fileName);// src.getName = null
 			drawImages();
 			
-			
-		
 			portraitPanel.setIcon(new ImageIcon(portrait));
 			portraitPanel.repaint();
 			tokenPanel.setIcon(new ImageIcon(token));
 			tokenPanel.repaint();
-			
 			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -1144,7 +1142,6 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 
 			case textExport:
 				try{	
-		
 					String rawPath = FireEmblemCharacterCreator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 					String path = URLDecoder.decode(rawPath, "UTF-8");
 					path = path.substring(0, path.lastIndexOf("/") + 1);
@@ -1169,35 +1166,25 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			
 			case textRandomColours://NEW
 				//System.out.println("textRandomColours");
-			{
-				String sliderName;
-				
-				int max ;
-				int min ;
-				int n;
-				int i;
-				int randomNum;
-				
-				
-				for(JSlider slider : sliders) {
-					
-					sliderName = slider.getName();
-					
-					if(sliderName==null) {//colours but not offset or skin
-						
-						max = slider.getMaximum();
-						min = slider.getMinimum();
-						
-						n = max - min + 1;
-						i = Math.abs(rn.nextInt() % n);
-						randomNum =  min + i;
-						
-						slider.setValue(randomNum);
-						
+				{
+					String sliderName;
+					int max ;
+					int min ;
+					int n;
+					int i;
+					int randomNum;
+					for(JSlider slider : sliders) {
+						sliderName = slider.getName();
+						if(sliderName==null) {//colours but not offset or skin	
+							max = slider.getMaximum();
+							min = slider.getMinimum();
+							n = max - min + 1;
+							i = Math.abs(rn.nextInt() % n);
+							randomNum =  min + i;
+							slider.setValue(randomNum);
+						}	
 					}	
-				}	
-				
-			}
+				}
 				break;
 			
 				
@@ -1205,34 +1192,21 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 			case textRandomPortrait:
 				//System.out.println("textRandomPortrait");
 				//TODO
-			{
-				
-				
-				String boxName;
-				int n;
-				int randomNum;
-				
-				
-				for(JComboBox<String> box : boxes) {
-					
-					boxName = box.getName();
-					
-					if(boxName!=null) {//portraits and not token
-							
-						n = box.getItemCount() ;						
-						randomNum = Math.abs(rn.nextInt() % n);
-						
-						System.out.println(randomNum + "/" + n);
-						box.setSelectedIndex(randomNum);
-						
-					}	
+				{
+					String boxName;
+					int n;
+					int randomNum;		
+					for(JComboBox<String> box : boxes) {	
+						boxName = box.getName();
+						if(boxName!=null) {//portraits and not token		
+							n = box.getItemCount() ;						
+							randomNum = Math.abs(rn.nextInt() % n);
+							System.out.println(randomNum + "/" + n);
+							box.setSelectedIndex(randomNum);
+						}	
+					}
 				}
-			}
 				break;
-			
-			
-			
-			
 			}
 		}
 
