@@ -5,21 +5,17 @@ import java.io.IOException;
 
 public class CreatorComposant {
 
-
     public int XOffset;
     public int YOffset;
     public BufferedImage BI;
     public int IJmax;
 
-
     public CreatorComposant(String pathname , int ijmax){
 
-        System.out.println(">> CreatorComposant()");
-        
 		try {
             BI = ImageIO.read(new File(pathname));
 		} catch (IOException ex) {
-			System.out.println(">>" + ex);
+			System.out.println(ex);
 		}
 
         XOffset = 0;
@@ -27,6 +23,5 @@ public class CreatorComposant {
 
         IJmax = ijmax;
     }
-
 
 }
