@@ -38,7 +38,11 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	/**
 	 * 
 	 */
+
+	//#region Tons of variables
+
 	private static final long serialVersionUID = 1L;
+
 	//drawImages
 	BufferedImage portrait;		
 	BufferedImage token;		
@@ -53,7 +57,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	JLabel portraitPanel;
 	JLabel tokenPanel;
 	
-	//TODO
+	
 	int width;
 	int height;
 	
@@ -66,6 +70,8 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	ArrayList<JSlider> sliders = new ArrayList<JSlider>();
 	ArrayList<JComboBox<String>> boxes = new ArrayList<JComboBox<String>>();
 	
+	ArrayList<CreatorSlider> CreatorSliders = new ArrayList<CreatorSlider>();//NEW
+
 	Color skinColor = new Color(192,140,110,255);
 	Color hairColor = new Color(64,50,25,255);
 	Color metalColor = new Color(100,100,100,255);
@@ -87,6 +93,8 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	ArrayList<String> tokens = new ArrayList<String>();
 
 	private JPanel contentPane;
+
+	//#endregion
 
 	/**
 	 * Launch the application.
@@ -113,7 +121,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		String rawPath = FireEmblemCharacterCreator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		System.out.println("rawPath : " + rawPath);
 
-		// TODO : better path
+		
 		String path = URLDecoder.decode(rawPath, "UTF-8");
 		path = path.substring(0, path.lastIndexOf("/") + 1);
 		path = path.replaceAll("%20", " ");
@@ -126,7 +134,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		CCarmor = new CreatorComposant(path + "resources/Empty.png", 96);
 		CCimportedToken = new CreatorComposant(path + "resources/BlankTok.png", 64);
 
-		//TODO : factor this
+		
 		portrait = null;
 		try {
 		    portrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
@@ -149,7 +157,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		}
 		
 		
-		//TODO : factor this
+		
 		int initialWidth = 1000;//932
 		int initialHeight = 700;//610	
 		int border = 5;//5 (useless ?)
@@ -180,8 +188,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		
 		
 		
-		//TODO : factor this ??
-		
+	
 		
 		setFont(new Font("Calibri", Font.BOLD, 12));
 		setTitle("Fire Emblem Character Creator - Custom build");
@@ -232,6 +239,11 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		lblBlue.setBounds(xBlueText, 14, 46, 21);
 		contentPane.add(lblBlue);
 		
+		CreatorSlider hairBlue = new CreatorSlider(xBlueSlider, 11);
+		CreatorSliders.add(hairBlue);
+		contentPane.add(hairBlue.getJslider());
+
+		/*
 		JSlider hairBlue = new JSlider();
 		hairBlue.setValue(24);
 		hairBlue.setPaintTicks(true);
@@ -240,6 +252,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		hairBlue.setMajorTickSpacing(64);
 		hairBlue.setBounds(xBlueSlider, 11, widthSlider, 38);
 		contentPane.add(hairBlue);
+		*/
 		
 		JSlider skinBlue = new JSlider();
 		skinBlue.setValue(110);
@@ -421,7 +434,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		JLabel lblArmorClothColor = new JLabel("Armor Cloth Color: Red");
 		lblArmorClothColor.setForeground(redTextColor);//NEW
 		lblArmorClothColor.setFont(new Font("Calibri", Font.BOLD, 13));
-		lblArmorClothColor.setBounds(xRedText, 207, widthTextRed, 21);//TODO
+		lblArmorClothColor.setBounds(xRedText, 207, widthTextRed, 21);
 		contentPane.add(lblArmorClothColor);
 		
 		JSlider leatherBlue = new JSlider();
@@ -664,10 +677,10 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		
 
 		
-		//TODO : factor this
+		
 		hairRed.addChangeListener(this);
 		hairGreen.addChangeListener(this);
-		hairBlue.addChangeListener(this);
+		hairBlue.Jslider.addChangeListener(this);
 		skinRed.addChangeListener(this);
 		skinGreen.addChangeListener(this);
 		skinBlue.addChangeListener(this);
@@ -691,10 +704,10 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		armorYOffset.addChangeListener(this);
 		
 		
-		//TODO : factor this
+
 		sliders.add(hairRed);
 		sliders.add(hairGreen);
-		sliders.add(hairBlue);
+		sliders.add(hairBlue.Jslider);
 		sliders.add(skinRed);
 		sliders.add(skinGreen);
 		sliders.add(skinBlue);
@@ -1097,7 +1110,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				
 			case textRandomPortrait:
 				//System.out.println("textRandomPortrait");
-				//TODO
+				
 				{
 					String boxName;
 					int n;
