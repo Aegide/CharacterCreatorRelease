@@ -9,9 +9,9 @@ public class CreatorSlider {
     JSlider Jslider;
 
     //Basic Slider
-    public CreatorSlider(int x, int y, SliderEnum name){
+    public CreatorSlider(int value, int x, int y, SliderEnum name){
         Jslider = new JSlider();
-        Jslider.setValue(64);
+        Jslider.setValue(value);
         Jslider.setMajorTickSpacing(64);
         Jslider.setPaintTicks(true);
         Jslider.setPaintLabels(true);
@@ -21,8 +21,5 @@ public class CreatorSlider {
         Jslider.setName(name.toString());//NEW
     }
 
-    public JSlider getJslider(){
-        return Jslider;
-    }
 
 }

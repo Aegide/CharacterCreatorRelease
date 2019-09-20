@@ -239,37 +239,20 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		lblBlue.setBounds(xBlueText, 14, 46, 21);
 		contentPane.add(lblBlue);
 		
-		CreatorSlider hairBlue = new CreatorSlider(xBlueSlider, 11);
+		CreatorSlider hairBlue = new CreatorSlider(24, xBlueSlider, 11, SliderEnum.hair);
 		CreatorSliders.add(hairBlue);
-		contentPane.add(hairBlue.getJslider());
-
-		/*
-		JSlider hairBlue = new JSlider();
-		hairBlue.setValue(24);
-		hairBlue.setPaintTicks(true);
-		hairBlue.setPaintLabels(true);
-		hairBlue.setMaximum(255);
-		hairBlue.setMajorTickSpacing(64);
-		hairBlue.setBounds(xBlueSlider, 11, widthSlider, 38);
-		contentPane.add(hairBlue);
-		*/
+		contentPane.add(hairBlue.Jslider);
 		
-		JSlider skinBlue = new JSlider();
-		skinBlue.setValue(110);
-		skinBlue.setPaintTicks(true);
-		skinBlue.setPaintLabels(true);
-		skinBlue.setMaximum(255);
-		skinBlue.setMajorTickSpacing(64);
-		skinBlue.setBounds(xBlueSlider, 60, widthSlider, 38);
-		skinBlue.setName("skin");//NEW
-		contentPane.add(skinBlue);
+		CreatorSlider skinBlue = new CreatorSlider(64, xBlueSlider, 60, SliderEnum.skin);
+		CreatorSliders.add(skinBlue);
+		contentPane.add(skinBlue.Jslider);
 		
 		JLabel label = new JLabel("Blue");
 		label.setForeground(blueTextColor);//NEW
 		label.setFont(new Font("Calibri", Font.BOLD, 13));
 		label.setBounds(xBlueText, 63, 46, 21);
 		contentPane.add(label);
-		
+
 		JSlider skinGreen = new JSlider();
 		skinGreen.setValue(140);
 		skinGreen.setPaintTicks(true);
@@ -683,7 +666,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		hairBlue.Jslider.addChangeListener(this);
 		skinRed.addChangeListener(this);
 		skinGreen.addChangeListener(this);
-		skinBlue.addChangeListener(this);
+		skinBlue.Jslider.addChangeListener(this);
 		metalRed.addChangeListener(this);
 		metalGreen.addChangeListener(this);
 		metalBlue.addChangeListener(this);
@@ -704,13 +687,13 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		armorYOffset.addChangeListener(this);
 		
 		
-
+		
 		sliders.add(hairRed);
 		sliders.add(hairGreen);
 		sliders.add(hairBlue.Jslider);
 		sliders.add(skinRed);
 		sliders.add(skinGreen);
-		sliders.add(skinBlue);
+		sliders.add(skinBlue.Jslider);
 		sliders.add(metalRed);
 		sliders.add(metalGreen);
 		sliders.add(metalBlue);
