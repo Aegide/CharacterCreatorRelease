@@ -6,7 +6,7 @@ public class JFrameResizing extends JFrame implements ComponentListener {
   JLabel label;
  
   
-  
+  private static final long serialVersionUID = 1L;
   JFrameResizing(){
     label = new JLabel();
     getContentPane().add(label);
