@@ -12,7 +12,9 @@ public enum SliderEnum {
 
     cloth("cloth"),
 
-    leather("leather");
+    leather("leather"),
+
+    offset("offset");
   
 
     private String Name;
