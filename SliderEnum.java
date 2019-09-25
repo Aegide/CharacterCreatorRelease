@@ -1,6 +1,7 @@
 
 
 public enum SliderEnum {
+//TODO : rename "ElementEnum"
 
     skin("skin"),
   

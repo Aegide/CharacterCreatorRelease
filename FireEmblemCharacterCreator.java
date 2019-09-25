@@ -199,6 +199,37 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+
+		//TODO
+		ArrayList<SliderEnum> iterationElement = new ArrayList<SliderEnum>();
+		
+		iterationElement.add(SliderEnum.hair);
+		iterationElement.add(SliderEnum.skin);
+		iterationElement.add(SliderEnum.metal);
+		iterationElement.add(SliderEnum.trim);
+		iterationElement.add(SliderEnum.cloth);
+		iterationElement.add(SliderEnum.leather);
+
+
+		ArrayList<ColorEnum> iterationColor = new ArrayList<ColorEnum>();
+		iterationColor.add(ColorEnum.red);
+		iterationColor.add(ColorEnum.green);
+		iterationColor.add(ColorEnum.blue);
+
+		/*
+		for (SliderEnum element : iterationElement) {
+			for (ColorEnum color : iterationColor) {
+				System.out.println("Label : " + element + " : " + color);
+				System.out.println("Slider : " + element + " : " + color);
+				System.out.println(" ");
+			}
+		}
+		*/
+
+
+
+		//Hair
+
 		JLabel lblHairColorRed = new JLabel("Hair Color: Red");
 		lblHairColorRed.setForeground(redTextColor);//NEW
 		lblHairColorRed.setFont(new Font("Calibri", Font.BOLD, sizeFont));
@@ -208,6 +239,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		CreatorSlider hairRed = new CreatorSlider(64, xRedSlider, yHairElement, SliderEnum.hair);
 		CreatorSliders.add(hairRed);
 		contentPane.add(hairRed.Jslider);
+		
+
+
 		
 		JLabel lblGreen = new JLabel("Green");
 		lblGreen.setForeground(greenTextColor);//NEW		
@@ -219,6 +253,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		CreatorSliders.add(hairGreen);
 		contentPane.add(hairGreen.Jslider);
 	
+
+
+
 		JLabel lblBlue = new JLabel("Blue");
 		lblBlue.setForeground(blueTextColor);//NEW		
 		lblBlue.setFont(new Font("Calibri", Font.BOLD, sizeFont));
@@ -229,6 +266,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		CreatorSliders.add(hairBlue);
 		contentPane.add(hairBlue.Jslider);
 		
+
+
+
+
+		//Skin
+
 		CreatorSlider skinBlue = new CreatorSlider(64, xBlueSlider, ySkinElement, SliderEnum.skin);
 		CreatorSliders.add(skinBlue);
 		contentPane.add(skinBlue.Jslider);
@@ -259,6 +302,11 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		lblSkinColorRed.setBounds(xRedText, ySkinElement, widthTextRed, sizeText);
 		contentPane.add(lblSkinColorRed);
 		
+
+
+		//Metal
+
+
 		CreatorSlider metalBlue = new CreatorSlider(100, xBlueSlider, yMetalElement, SliderEnum.metal);
 		CreatorSliders.add(metalBlue);
 		contentPane.add(metalBlue.Jslider);
@@ -289,6 +337,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		lblArmorMetalColor.setBounds(xRedText, yMetalElement, widthTextRed, sizeText);
 		contentPane.add(lblArmorMetalColor);
 		
+
+		//trim
+
 		CreatorSlider trimBlue = new CreatorSlider(82, xBlueSlider, yTrimElement, SliderEnum.trim);
 		CreatorSliders.add(trimBlue);
 		contentPane.add(trimBlue.Jslider);
@@ -319,6 +370,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		lblMetalTrimColor.setBounds(xRedText, yTrimElement, widthTextRed, sizeText);
 		contentPane.add(lblMetalTrimColor);
 		
+
+		//cloth
+
 		CreatorSlider clothBlue = new CreatorSlider(115, xBlueSlider, yClothElement, SliderEnum.cloth);
 		CreatorSliders.add(clothBlue);
 		contentPane.add(clothBlue.Jslider);
@@ -349,6 +403,8 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		lblArmorClothColor.setBounds(xRedText, yClothElement, widthTextRed, sizeText);
 		contentPane.add(lblArmorClothColor);
 		
+		//leather
+
 		CreatorSlider leatherBlue = new CreatorSlider(66, xBlueSlider, yLeatherElement, SliderEnum.leather);
 		CreatorSliders.add(leatherBlue);
 		contentPane.add(leatherBlue.Jslider);
@@ -379,6 +435,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		lblArmorLeatherColor.setBounds(xRedText, yLeatherElement, widthTextRed, sizeText);
 		contentPane.add(lblArmorLeatherColor);
 		
+
+
+
 		portraitPanel = new JLabel();
 		portraitPanel.setIcon(new ImageIcon(path + "resources/BlankPortrait.png"));
 		portraitPanel.setBounds(22, 331, 192, 192);
