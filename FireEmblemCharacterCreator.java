@@ -186,10 +186,8 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		
 		int widthTextOffset = 61;//46
 		
-		//int xSpace = 15;//10 (between Slider's end and Text's start)
-		
-		//String RandomColourText = "Random colours";
-				
+		//int xSpace = 15;//10 (between Slider's end and Text's start)	
+		//String RandomColourText = "Random colours";				
 		
 		setFont(new Font("Calibri", Font.BOLD, 12));
 		setTitle("Fire Emblem Character Creator - Custom build");
@@ -222,7 +220,6 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		contentPane.add(hairGreen.Jslider);
 	
 		JLabel lblBlue = new JLabel("Blue");
-		lblBlue.setForeground(blueTextColor);//NEW
 		lblBlue.setForeground(blueTextColor);//NEW		
 		lblBlue.setFont(new Font("Calibri", Font.BOLD, sizeFont));
 		lblBlue.setBounds(xBlueText, yHairElement + labelIncrement, widthTextBlue, sizeText);
