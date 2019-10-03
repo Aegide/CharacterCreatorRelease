@@ -5,3 +5,4 @@
 .vs/CharacterCreatorRelease/v16/.suo
 .vscode/settings.json
 *.class
+src/resources/*.png
