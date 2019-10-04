@@ -119,7 +119,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	public FireEmblemCharacterCreator() throws UnsupportedEncodingException {
 		
 		String rawPath = FireEmblemCharacterCreator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		System.out.println("rawPath : " + rawPath);
+
+
+		System.out.println("\n\nrawPath : " + rawPath + "\n\n");
 
 		
 		String path = URLDecoder.decode(rawPath, "UTF-8");
