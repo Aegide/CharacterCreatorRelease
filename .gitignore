@@ -1,2 +1,8 @@
 /resources/
 .vscode/launch.json
+*.sqlite
+.vs/VSWorkspaceState.json
+.vs/CharacterCreatorRelease/v16/.suo
+.vscode/settings.json
+*.class
+src/resources/*.png
