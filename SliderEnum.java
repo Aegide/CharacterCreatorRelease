@@ -1,5 +1,7 @@
+
+
 public enum SliderEnum {
-//TODO : rename "ElementEnum"
+    //TODO : rename "ElementEnum"
     
         info(),
     

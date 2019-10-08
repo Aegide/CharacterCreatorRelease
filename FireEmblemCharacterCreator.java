@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+
 import java.util.Random;
 
 import javax.swing.JSlider;
@@ -32,6 +33,10 @@ import javax.swing.JButton;
 //implements ComponentListener
 public class FireEmblemCharacterCreator extends JFrame implements ChangeListener, ItemListener, ActionListener {
 	
+	/**
+	 * 
+	 */
+
 	//#region Tons of variables
 
 	private static final long serialVersionUID = 1L;
@@ -50,6 +55,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	JLabel portraitPanel;
 	JLabel tokenPanel;
 	
+	
 	int width;
 	int height;
 	
@@ -57,6 +63,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	final String textRandomPortrait = "Random portrait";
 	final String textRandomToken = "Random token";
 	final String textExport = "Export";
+
 	final String boxPortrait = "Portrait";
 	final String boxToken = "Token";
 
@@ -64,6 +71,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	
 	ArrayList<JSlider> sliders = new ArrayList<JSlider>();
 	ArrayList<JComboBox<String>> boxes = new ArrayList<JComboBox<String>>();
+	
 	ArrayList<CreatorSlider> CreatorSliders = new ArrayList<CreatorSlider>();
 
 	Color skinColor = new Color(192,140,110,255);
@@ -78,6 +86,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	Color redTextColor = new Color(150,0,0,255);
 	Color greenTextColor = new Color(0,150,0,255);
 	Color blueTextColor = new Color(0,0,150,255);
+
 	Color exportBackgroundColor = new Color(150,200,150,255);
 
 	File folder;
@@ -129,12 +138,22 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		CCimportedToken = new CreatorComposant(path + "resources/BlankTok.png", 64);
 
 		portrait = null;
+		try {
+		    portrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
+		} catch (IOException ex) {
+			System.out.println(ex);
+		}
+
 		token = null;
+		try {
+		    token = ImageIO.read(new File(path + "resources/BlankTok.png"));
+		} catch (IOException ex) {
+			System.out.println(ex);
+		}
+		
 		blankPortrait = null;
 		try {
-			portrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
-			token = ImageIO.read(new File(path + "resources/BlankTok.png"));
-			blankPortrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
+		    blankPortrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
 		} catch (IOException ex) {
 			System.out.println(ex);
 		}
@@ -142,11 +161,15 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		int initialWidth = 1000;//932
 		int initialHeight = 700;//610	
 		int border = 5;//5 (useless ?)
-    
+		
+
 		int labelIncrement = 3;
+		
 		int widthText = 46;
+
 		int sizeText = 21;
 		int sizeFont = 13;
+		
 		int widthTextOffset = 61;//46
 		
 		//int xSpace = 15;//10 (between Slider's end and Text's start)	
@@ -162,9 +185,9 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+
 		//Build the lists of things we want to combine
 		ArrayList<SliderEnum> iterationElement = new ArrayList<SliderEnum>();
-
 		iterationElement.add(SliderEnum.hair);
 		iterationElement.add(SliderEnum.skin);
 		iterationElement.add(SliderEnum.metal);
@@ -257,8 +280,6 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		tokenPanel= new JLabel();
 		tokenPanel.setIcon(new ImageIcon(path + "resources/BlankTok.png"));
 		tokenPanel.setBounds(224, 403, 128, 128);
-		
-		
 		contentPane.add(tokenPanel);
 		
 		JLabel lblHair = new JLabel("Hair");
@@ -320,6 +341,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		comboBox_2.setName(boxPortrait);
 		comboBox_3.setName(boxToken);
 		
+		
 		JLabel lblToken = new JLabel("Token");
 		lblToken.setFont(new Font("Calibri", Font.BOLD, sizeFont));
 		lblToken.setBounds(224, 323, widthText, sizeText);
@@ -333,12 +355,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		hairXOffset.setMaximum(20);
 		hairXOffset.setMinimum(-20);
 		hairXOffset.setBounds(373, 403, 151, 38);
-    hairXOffset.setName(SliderEnum.offset.Name);
+		hairXOffset.setName(SliderEnum.offset.Name);
 		contentPane.add(hairXOffset);
 		
 		JLabel lblXOffset = new JLabel("Y Offset");
 		lblXOffset.setFont(new Font("Calibri", Font.BOLD, sizeFont));
-    lblXOffset.setBounds(373, 383, widthTextOffset, sizeText);//(373, 383, 46, 21) ??
+		lblXOffset.setBounds(373, 383, widthTextOffset, sizeText);//(373, 383, 46, 21) ??
 		contentPane.add(lblXOffset);
 		
 		JLabel lblYOffset = new JLabel("X Offset");
@@ -354,7 +376,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		hairYOffset.setMaximum(20);
 		hairYOffset.setMajorTickSpacing(10);
 		hairYOffset.setBounds(373, 466, 151, 38);
-    hairYOffset.setName(SliderEnum.offset.Name);
+		hairYOffset.setName(SliderEnum.offset.Name);
 		contentPane.add(hairYOffset);
 		
 		JLabel label_2 = new JLabel("Y Offset");
@@ -370,7 +392,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		faceXOffset.setMaximum(20);
 		faceXOffset.setMajorTickSpacing(10);
 		faceXOffset.setBounds(557, 406, 151, 38);
-    faceXOffset.setName(SliderEnum.offset.Name);
+		faceXOffset.setName(SliderEnum.offset.Name);
 		contentPane.add(faceXOffset);
 		
 		JLabel label_5 = new JLabel("X Offset");
@@ -386,7 +408,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		faceYOffset.setMaximum(20);
 		faceYOffset.setMajorTickSpacing(10);
 		faceYOffset.setBounds(557, 469, 151, 38);
-    faceYOffset.setName(SliderEnum.offset.Name);
+		faceYOffset.setName(SliderEnum.offset.Name);
 		contentPane.add(faceYOffset);
 		
 		JLabel label_8 = new JLabel("Y Offset");
@@ -402,7 +424,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		armorXOffset.setMaximum(20);
 		armorXOffset.setMajorTickSpacing(10);
 		armorXOffset.setBounds(734, 403, 151, 38);
-    armorXOffset.setName(SliderEnum.offset.Name);
+		armorXOffset.setName(SliderEnum.offset.Name);
 		contentPane.add(armorXOffset);
 		
 		JLabel label_11 = new JLabel("X Offset");
@@ -418,12 +440,12 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		armorYOffset.setMaximum(20);
 		armorYOffset.setMajorTickSpacing(10);
 		armorYOffset.setBounds(734, 466, 151, 38);
-    armorYOffset.setName(SliderEnum.offset.Name);
+		armorYOffset.setName(SliderEnum.offset.Name);
 		contentPane.add(armorYOffset);
 		
 		JButton btnNewButton = new JButton(textExport);
 		btnNewButton.setFont(new Font("Calibri", Font.BOLD, sizeFont));
-btnNewButton.setBounds(400, 530, 113, 38);
+		btnNewButton.setBounds(400, 530, 113, 38);
 		btnNewButton.setBackground(exportBackgroundColor);
 		contentPane.add(btnNewButton);
 		
@@ -441,6 +463,7 @@ btnNewButton.setBounds(400, 530, 113, 38);
 		btnRandomToken.setFont(new Font("Calibri", Font.BOLD, sizeFont));
 		btnRandomToken.setBounds(222, 530, 145, 40);//22, 331
 		contentPane.add(btnRandomToken);
+
 		hairXOffset.addChangeListener(this);
 		hairYOffset.addChangeListener(this);
 		faceXOffset.addChangeListener(this);
@@ -468,7 +491,7 @@ btnNewButton.setBounds(400, 530, 113, 38);
 		btnNewButton.addActionListener(this);
 		btnRandomColour.addActionListener(this);
 		btnRandomPortrait.addActionListener(this);
-    btnRandomToken.addActionListener(this);
+		btnRandomToken.addActionListener(this);
 	}
 	
 	static BufferedImage deepCopy(BufferedImage bi) {
@@ -779,9 +802,7 @@ btnNewButton.setBounds(400, 530, 113, 38);
 	public void actionPerformed(ActionEvent event){
 
 		String str = event.getActionCommand();
-
 		System.out.println("\n>> " + str);
-
 		switch(str) {
 
 			case textExport:
@@ -807,7 +828,8 @@ btnNewButton.setBounds(400, 530, 113, 38);
 				};
 				break;
 				
-case textRandomColours:
+			
+			case textRandomColours:
 				{
 					String sliderName;
 					int max ;
@@ -836,6 +858,7 @@ case textRandomColours:
 				break;
 			
 				
+				
 			case textRandomPortrait:
 				{
 					String boxName;
@@ -856,20 +879,8 @@ case textRandomColours:
 				}
 				break;
 
-					for(JSlider slider : sliders) {
-						sliderName = slider.getName();
-						System.out.println(sliderName);
-						
-						if(sliderName != offsetName && sliderName != skinName) {//colours but not offset or skin	
-							max = slider.getMaximum();
-							min = slider.getMinimum();
-							n = max - min + 1;
-							i = Math.abs(rn.nextInt() % n);
-							randomNum =  min + i;
-							slider.setValue(randomNum);
-						}
 
-case textRandomToken:
+			case textRandomToken:
 			{
 				String boxName;
 				int n;
@@ -881,6 +892,7 @@ case textRandomToken:
 						n = box.getItemCount() ;						
 						randomNum = Math.abs(rn.nextInt() % n);
 						box.setSelectedIndex(randomNum);
+
 						elementName = box.getSelectedItem().toString();
 						System.out.println(randomNum + "/" + n + " - " + elementName );
 					}	
