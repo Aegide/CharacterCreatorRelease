@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+
 import java.util.Random;
 
 import javax.swing.JSlider;
@@ -32,6 +33,10 @@ import javax.swing.JButton;
 //implements ComponentListener
 public class FireEmblemCharacterCreator extends JFrame implements ChangeListener, ItemListener, ActionListener {
 	
+	/**
+	 * 
+	 */
+
 	//#region Tons of variables
 
 	private static final long serialVersionUID = 1L;
@@ -50,6 +55,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	JLabel portraitPanel;
 	JLabel tokenPanel;
 	
+	
 	int width;
 	int height;
 	
@@ -65,6 +71,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	
 	ArrayList<JSlider> sliders = new ArrayList<JSlider>();
 	ArrayList<JComboBox<String>> boxes = new ArrayList<JComboBox<String>>();
+	
 	ArrayList<CreatorSlider> CreatorSliders = new ArrayList<CreatorSlider>();
 
 	Color skinColor = new Color(192,140,110,255);
@@ -79,6 +86,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 	Color redTextColor = new Color(150,0,0,255);
 	Color greenTextColor = new Color(0,150,0,255);
 	Color blueTextColor = new Color(0,0,150,255);
+
 	Color exportBackgroundColor = new Color(150,200,150,255);
 
 	File folder;
@@ -130,12 +138,22 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		CCimportedToken = new CreatorComposant(path + "resources/BlankTok.png", 64);
 
 		portrait = null;
+		try {
+		    portrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
+		} catch (IOException ex) {
+			System.out.println(ex);
+		}
+
 		token = null;
+		try {
+		    token = ImageIO.read(new File(path + "resources/BlankTok.png"));
+		} catch (IOException ex) {
+			System.out.println(ex);
+		}
+		
 		blankPortrait = null;
 		try {
-			portrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
-			token = ImageIO.read(new File(path + "resources/BlankTok.png"));
-			blankPortrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
+		    blankPortrait = ImageIO.read(new File(path + "resources/BlankPortrait.png"));
 		} catch (IOException ex) {
 			System.out.println(ex);
 		}
@@ -143,10 +161,15 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		int initialWidth = 1000;//932
 		int initialHeight = 700;//610	
 		int border = 5;//5 (useless ?)
+		
+
 		int labelIncrement = 3;
+		
 		int widthText = 46;
+
 		int sizeText = 21;
 		int sizeFont = 13;
+		
 		int widthTextOffset = 61;//46
 		
 		//int xSpace = 15;//10 (between Slider's end and Text's start)	
@@ -162,6 +185,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+
 		//Build the lists of things we want to combine
 		ArrayList<SliderEnum> iterationElement = new ArrayList<SliderEnum>();
 		iterationElement.add(SliderEnum.hair);
@@ -316,6 +340,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 		comboBox_1.setName(boxPortrait);
 		comboBox_2.setName(boxPortrait);
 		comboBox_3.setName(boxToken);
+		
 		
 		JLabel lblToken = new JLabel("Token");
 		lblToken.setFont(new Font("Calibri", Font.BOLD, sizeFont));
@@ -803,6 +828,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				};
 				break;
 				
+			
 			case textRandomColours:
 				{
 					String sliderName;
@@ -831,6 +857,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 				}
 				break;
 			
+				
 				
 			case textRandomPortrait:
 				{
@@ -865,6 +892,7 @@ public class FireEmblemCharacterCreator extends JFrame implements ChangeListener
 						n = box.getItemCount() ;						
 						randomNum = Math.abs(rn.nextInt() % n);
 						box.setSelectedIndex(randomNum);
+
 						elementName = box.getSelectedItem().toString();
 						System.out.println(randomNum + "/" + n + " - " + elementName );
 					}	

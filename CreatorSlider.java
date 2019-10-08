@@ -1,5 +1,6 @@
 import javax.swing.JSlider;
 
+
 public class CreatorSlider {
 
     int WidthSlider = 215;
@@ -17,4 +18,5 @@ public class CreatorSlider {
         Jslider.setBounds(x, y, WidthSlider, HeightSlider);
         Jslider.setName(sliderName);
     }
+
 }
